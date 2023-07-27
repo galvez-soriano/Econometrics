@@ -35,6 +35,13 @@ replace incwage=. if incwage==99999999
 replace incwage=. if incwage<0
 keep year cpsidp statecensus asecwt age female white empstat work labforce ///
 uhrsworkt educ inctot incwage
+gen exper=age-edu+5
+gen exper2=exper^2
+
+reg incwage edu exper exper2 female [aw=asecwt] if work==1 & age>=18 & age<=65
+reg incwage edu [aw=asecwt] if work==1 & age>=18 & age<=65
+predict y_hat
+gen epsilon=incwage-y_hat
 
 graph twoway (lfit incwage edu) (scatter incwage edu) if incwage>0 & incwage<1000000 & work==1 & edu>=5
 
