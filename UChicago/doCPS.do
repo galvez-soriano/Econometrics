@@ -1,6 +1,11 @@
+*============================================================*
 /* Working with March CPS 2022 */
-cd "C:\Users\galve\Documents\UChicago\ECON11020"
-use cps_mar22, clear
+*============================================================*
+gl data="https://raw.githubusercontent.com/galvez-soriano/Econometrics/main/UChicago"
+gl doc="C:\Users\ogalvez\Documents\Econ 11020"
+*============================================================*
+use "$data/cps_mar22.dta", clear
+
 label drop _all
 tostring cpsidp, replace format(%014.0f) force
 keep year cpsidp statecensus asecwt age sex race empstat labforce uhrsworkt ///
