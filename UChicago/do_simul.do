@@ -53,10 +53,40 @@ graph export "$data\w_edu_lfit.png", replace
 reg wages edu
 
 reg wages edu exper exper2 female
-predict resid, residuals
+*predict resid, residuals
 
 binscatter wages edu, nquantiles(60)
 
+
+
+gen samp=1 if id<=1000
+replace samp=0 if samp==.
+
+twoway (scatter wages edu if samp ==0, mcolor(gs13)) ///
+       (scatter wages edu if samp ==1, mcolor(navy)) ///
+	   (lfit wages edu if samp ==1, lcolor(red)), ///
+	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
+graph export "$data\pop_samp.png", replace
+
+gen samp2=1 if id<=500 & wages<=150000
+replace samp2=0 if samp2==.
+replace samp2=1 if samp2==0 & id>=1001 & id<=10100 & wages<=50000
+
+twoway (scatter wages edu if samp2 ==0, mcolor(gs13)) ///
+       (scatter wages edu if samp2 ==1, mcolor(navy)) ///
+	   (lfit wages edu if samp2 ==1, lcolor(red)), ///
+	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
+graph export "$data\pop_samp2.png", replace
+
+gen samp3=1 if id<=1000 & wages>=50000
+replace samp3=0 if samp3==.
+replace samp3=1 if samp3==0 & id>=1001 & id<=1050 & wages>=150000
+
+twoway (scatter wages edu if samp3 ==0, mcolor(gs13)) ///
+       (scatter wages edu if samp3 ==1, mcolor(navy)) ///
+	   (lfit wages edu if samp3 ==1, lcolor(red)), ///
+	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
+graph export "$data\pop_samp3.png", replace
 *============================================================*
 use "$data\inc_simul.dta", clear
 
