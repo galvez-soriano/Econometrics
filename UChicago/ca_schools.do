@@ -17,3 +17,12 @@ save "$base\CAschools.dta", replace */
 use "$data/CAschools.dta", clear
 reg testscore str el
 reg testscore str el enroll
+*============================================================*
+use "$data/cps2022.dta", clear
+
+reg lwage educ exper
+vce
+* SE of coefficient for educ
+dis sqrt(0.00002856)
+* SE of coefficient for exper
+dis sqrt(6.785e-07)
