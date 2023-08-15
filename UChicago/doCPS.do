@@ -42,6 +42,10 @@ keep year cpsidp statecensus asecwt age female white empstat work labforce ///
 uhrsworkt educ inctot incwage
 gen exper=age-edu+5
 gen exper2=exper^2
+replace incwage=1 if incwage==0
+gen lwage=log(incwage)
+keep if age>=18 & age<=80
+save "$doc/cps2022.dta", replace
 
 reg incwage edu exper exper2 female [aw=asecwt] if work==1 & age>=18 & age<=65
 reg incwage edu [aw=asecwt] if work==1 & age>=18 & age<=65
