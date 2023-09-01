@@ -10,7 +10,7 @@ graph set window fontface "Times New Roman"
 grstyle init
 grstyle set plain, horizontal
 *============================================================*
-gl base="C:\Users\ogalvez\Documents\Econ 11020"
+gl base="C:\Users\galve\Documents\UChicago\ECON11020"
 gl data= "https://raw.githubusercontent.com/galvez-soriano/Econometrics/main/UChicago"
 *============================================================*
 /* Interpretation */
@@ -38,25 +38,69 @@ reg lwage educ exper exper2
 /* Specification: using dummies to capture non-linearities */
 *============================================================*
 
-binscatter lwage educ, controls(exper exper2) nquantiles(60)
+binscatter lwage educ, nquantiles(60) ytitle("ln(wages)") ///
+xtitle("Education (years)")
 graph export "$base\wedu.png", replace
-binscatter lwage educ, controls(exper exper2) nquantiles(60) line(qfit)
+binscatter lwage educ, nquantiles(60) line(qfit) ytitle("ln(wages)") ///
+xtitle("Education (years)")
 graph export "$base\wedu2.png", replace
 
-gen educa8=educ<=8 & educ!=0
-gen educa11=educ<=11 & educ>=9
-gen educa12=educ==12
-gen educa15=educ<=15 & educ>=13
-gen educa16=educ==16
-gen educa21=educ>=17
+gen educa=educ<=11
+replace educa=2 if educ<=13 & educ>=12
+replace educa=3 if educ>=14
 
-reg lwage educa* exper exper2
+gen educa0=educa==1
+gen educa1=educa==2
+gen educa2=educa==3
+
+reg lwage educa1 educa2
+reg lwage educa0 educa1 educa2, noconst
+
+binscatter lwage educ, nquantiles(60) line(none) yline(4.1 5.9 7.8) ///
+xline(11 14 , lstyle(grid) lpattern(dash) lcolor(gray)) ///
+ytitle("ln(wages)") xtitle("Education (years)")
+graph export "$base\wedu3.png", replace
 
 *============================================================*
 /* Specification: using weights */
 *============================================================*
-reg lwage educa* exper exper2 [aw=asecwt]
+reg lwage educa1 educa2 [aw=asecwt]
 
 *============================================================*
 /* Specification: more details on dummy variables */
 *============================================================*
+drop educa
+reg lwage educa* [aw=asecwt], noconst
+*============================================================*
+/* Hypothesis Testing */
+*============================================================*
+reg lwage white educ 
+
+gen black=white==0
+gen wedu=white*educ
+gen bedu=black*educ
+
+reg lwage white wedu bedu
+
+dis _b[wedu]-_b[bedu]
+
+mat A=e(V)
+dis (_b[wedu]-_b[bedu])/sqrt(A[2,2]+A[3,3]-2*A[3,2])
+
+test wedu=bedu
+
+reg lwage white wedu educ
+
+/* F-test */
+
+reg lwage white wedu bedu
+
+reg lwage white
+
+dis invFtail(2, 111620, 0.05)
+
+dis ((3013218.84-2866697.16)/(2))/(2866697.16/(111620))
+
+reg lwage white wedu bedu
+
+test wedu bedu
