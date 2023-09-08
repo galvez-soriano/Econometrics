@@ -1,0 +1,190 @@
+\documentclass[compress,black]{beamer}
+\mode<presentation>
+
+\usetheme{Warsaw}
+
+\usefonttheme{serif}
+
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{Green}{rgb}{0,1,0}
+\definecolor{magenta}{rgb}{1,0,.6}
+\definecolor{lightblue}{rgb}{0,.5,1}
+\definecolor{lightpurple}{rgb}{.6,.4,1}
+\definecolor{gold}{rgb}{.6,.5,0}
+\definecolor{orange}{rgb}{1,0.4,0}
+\definecolor{hotpink}{rgb}{1,0,0.5}
+\definecolor{newcolor2}{rgb}{.5,.3,.5}
+\definecolor{newcolor}{rgb}{0,.3,1}
+\definecolor{newcolor3}{rgb}{1,0,.35}
+\definecolor{darkgreen1}{rgb}{0, .35, 0}
+\definecolor{darkgreen}{rgb}{0, .6, 0}
+\definecolor{darkred}{rgb}{.75,0,0}
+
+\xdefinecolor{olive}{cmyk}{0.64,0,0.95,0.4}
+\xdefinecolor{purpleish}{cmyk}{0.75,0.75,0,0}
+
+\useoutertheme[subsection=false]{smoothbars}
+
+% include packages
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+%\usepackage{pstricks}
+%\usepackage{pst-plot}
+\usepackage{subfigure}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage[all,knot]{xy}
+\xyoption{arc}
+\usepackage{url}
+\usepackage{multimedia}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{epsfig}
+\usepackage[font=small,labelfont=bf]{caption}
+%\usepackage{sectsty}
+\title{Worms: Identifying impacts on education and health}
+\subtitle{Miguel and Kremer (2004)}
+\author{Oscar de J. Gálvez-Soriano}
+\institute{{University of Houston}\\ \vspace{.10cm}Department of Economics}
+\date{\scriptsize April 17th, 2020}
+
+\begin{document}
+
+\frame{
+	\titlepage
+}
+
+\section[Outline]{}
+\frame{\tableofcontents}
+
+\section{Motivation}
+\frame{\frametitle{Research Question}
+
+\begin{itemize}
+\item Can deworming reduce school absenteeism?
+\item Can deworming increase test scores?
+\end{itemize}
+
+}
+
+\frame{\frametitle{Motivation}
+
+\begin{itemize}
+\item Hookworm, roundworm and schistosomiasis infect one in four people worldwide. They are particularly prevalent among school-age children in developing countries.
+\item Low-cost single-dose oral therapies can kill the worms, reducing hookworm, roundworm, and schistosomiasis infections by 99 percent.
+\item Medical treatment could potentially interfere with disease transmission, creating positive externalities.
+\item The educational impact of deworming is considered a key issue in assessing whether the poorest countries should accord priority to deworming.
+\end{itemize}
+
+}
+
+\section{RCT}
+\frame{\frametitle{RCT}
+
+\begin{itemize}
+\item Researchers randomly assign the health intervention. Specifically, schools randomly assigned to the treatment group received a deworming program, which offers their students a free health intervention that reduces worm infections.
+\item Schools in the control group did not get this deworming
+program.
+\end{itemize}
+
+}
+
+\frame{\frametitle{RCT}
+
+``If externalities benefit the comparison group, outcome differences between the treatment and comparison groups will understate the benefits of treatment on the treated.''
+
+}
+
+\section{Results}
+\frame{\frametitle{Results}
+
+\begin{itemize}
+\item The program reduced school absenteeism by at least one-quarter.
+\item Deworming reduces worm burdens and increases school participation among children in neighboring primary schools.
+\item No evidence that deworming increased academic test scores.
+\end{itemize}
+
+}
+
+\section{STATA}
+\frame{\frametitle{STATA}
+
+The researchers implement the randomized experiment. Some summary statistics on the probability of the student attending school during the post-treatment period are reported below. Based on these statistics, compute the treatment effect (i.e., the difference in mean outcome between the control and treatment group) and its standard error. You may assume that the observations are independent of each other.
+
+\begin{tabular}{|c|c|c|c|}
+\hline 
+Group & Observations & Attendance Rate (mean) & Variance\tabularnewline
+\hline 
+\hline 
+Treatment & 6,454 & 0.7868 & 0.1678\tabularnewline
+\hline 
+Control & 13,944 & 0.7012 & 0.2095\tabularnewline
+\hline 
+\end{tabular}
+
+}
+
+\frame{\frametitle{STATA}
+
+\[
+ATE=0.7868-0.7012
+\]
+
+\[
+ATE=0.0856
+\]
+
+\[
+SE=\left[\frac{0.1678}{6454}+\frac{0.2095}{13944}\right]^{1/2}
+\]
+
+\[
+SE=0.0064
+\]
+
+\[
+t_{stat}=\frac{0.0856}{0.0064}
+\]
+
+\[
+t_{stat}=13.36>1.96
+\]
+
+The difference between treatment and control group is statistically
+significant.
+
+}
+
+\frame{\frametitle{STATA}
+
+Open the worms.dta data set and use the ``ttest''
+command to test whether the mean attendance rate is different between
+the control and treatment groups (the relevant variables are the dummy
+for school participation (prs991) and the dummy for being in a treated
+school (t98). Do this first by allowing variances to be unequal and note that the standard error of the treatment effect is identical to what you calculated above. Then perform the command again, allowing for equal variances this time.
+
+}
+
+\frame{\frametitle{STATA}
+
+\begin{center}
+\begin{tabular}{ccc}
+\hline 
+ & Unequal & Equal\tabularnewline
+\hline 
+ATE & 0.0856{*}{*}{*} & 0.0856{*}{*}{*}\tabularnewline
+ & (-12.83) & (-13.36)\tabularnewline
+\hline 
+Observations & 20,398 & 20,398\tabularnewline
+\hline 
+\multicolumn{3}{l}{\footnotesize Note: Standard errors in parenthesis.}\tabularnewline
+\multicolumn{3}{l}{\footnotesize Significant levels: {*} $p<0.1$, {*}{*} $p<0.05$, {*}{*}{*} $p<0.01$}\tabularnewline
+\end{tabular}
+\end{center}
+
+}
+
+\end{document}
