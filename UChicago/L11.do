@@ -38,7 +38,32 @@ ttest re78, by(treated)
 
 /* Difference in means with unequal variances */
 ttest re78, by(treated) uneq
-
-
-
 reg re78 treated
+
+*========================================================================*
+* Is the mean attendance rate different between the control and treatment?
+*========================================================================*
+use "$data\worms.dta", clear
+ttest prs991, by(t98) unequal
+ttest prs991, by(t98)
+*========================================================================*
+* Run a regression of the varible school participation (prs991) on the 
+* dummy for being treated (t98).
+*========================================================================*
+label variable prs991 "Participation"
+label variable t98 "Treatment"
+label variable test98 "Scores98"
+label variable test96_a "Scores96"
+
+reg prs991 t98, vce(robust)
+reg prs991 t98
+*========================================================================*
+* You want to test whether the effect was different for girls than boys.
+*========================================================================*
+reg prs991 t98 if sex==1, vce(robust)
+reg prs991 t98 if sex==0, vce(robust)
+*========================================================================*
+* Run a regression of test score (test98) on the dummy for being treated (t98).
+*========================================================================*
+reg test98 t98, vce(robust)
+reg test98 t98 test96_a, vce(robust)
