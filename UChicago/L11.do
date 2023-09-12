@@ -100,11 +100,28 @@ xi: reg mrall beertax i.state
 /* You could also run the same regression without forming the state dummies */
 reg mrall beertax i.state
 
-/* Finally, you could also use the xtreg command */
+/* You could also use the xtreg command */
 xtset state year
 
 xtreg mrall beertax, fe
 
+/* Finally, using the demeaned equation rather than the dummy variable
+regression */
+egen statemeany=mean(mrall), by(state)
+egen statemeanx=mean(beertax), by(state)
+gen demeany=mrall-statemeany
+gen demeanx=beertax-statemeanx
+
+reg demeany demeanx, noc
+
 /* Notice that the point estimate associated to the beer tax variable is 
 the same among all methods. Differences in the constant term come from a 
 different omitted category */
+
+/* When we have data over time, we should also control for aggregate time
+effects. This way, we can avoid that the correlation between within
+differences in x (beertax) and within differences in y (fatalities) is due to
+spurious aggregate trends (e.g., bad economic conditions increase beertax
+(need more revenues) as well as decrease fatalities (less driving)) */
+
+areg mrall beertax i.year, absorb(state)
