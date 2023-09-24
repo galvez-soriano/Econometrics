@@ -53,40 +53,11 @@ graph export "$data\w_edu_lfit.png", replace
 reg wages edu
 
 reg wages edu exper exper2 female
-*predict resid, residuals
+
+predict resid, residuals
 
 binscatter wages edu, nquantiles(60)
 
-
-
-gen samp=1 if id<=1000
-replace samp=0 if samp==.
-
-twoway (scatter wages edu if samp ==0, mcolor(gs13)) ///
-       (scatter wages edu if samp ==1, mcolor(navy)) ///
-	   (lfit wages edu if samp ==1, lcolor(red)), ///
-	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
-graph export "$data\pop_samp.png", replace
-
-gen samp2=1 if id<=500 & wages<=150000
-replace samp2=0 if samp2==.
-replace samp2=1 if samp2==0 & id>=1001 & id<=10100 & wages<=50000
-
-twoway (scatter wages edu if samp2 ==0, mcolor(gs13)) ///
-       (scatter wages edu if samp2 ==1, mcolor(navy)) ///
-	   (lfit wages edu if samp2 ==1, lcolor(red)), ///
-	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
-graph export "$data\pop_samp2.png", replace
-
-gen samp3=1 if id<=1000 & wages>=50000
-replace samp3=0 if samp3==.
-replace samp3=1 if samp3==0 & id>=1001 & id<=1050 & wages>=150000
-
-twoway (scatter wages edu if samp3 ==0, mcolor(gs13)) ///
-       (scatter wages edu if samp3 ==1, mcolor(navy)) ///
-	   (lfit wages edu if samp3 ==1, lcolor(red)), ///
-	   legend(label(1 "Population") label(2 "Sample") pos(10) ring(0) col(1))
-graph export "$data\pop_samp3.png", replace
 *============================================================*
 use "$data\inc_simul.dta", clear
 
@@ -114,10 +85,9 @@ graph export "$data\cdf_w.png", replace
 cd "C:\Users\galve\Documents\UChicago\ECON11020"
 foreach x in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 ///
 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 ///
-50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 ///
-75 76 77 78 79 80 {
+50 51 52 53 54 55 56 57 58 59 60 {
 	set seed `x'
 	use inc_simul, clear
 	sample 10
-    save simul`x'.dta", replace
+    save simul`x'.dta, replace
 }
