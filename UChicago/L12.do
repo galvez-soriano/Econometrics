@@ -1,7 +1,7 @@
 *============================================================*
 /* ECON 11020 / Professor Oscar Galvez-Soriano */
 *============================================================*
-/* Lecture 12 */
+/* Lecture 13 */
 *============================================================*
 clear
 set more off
@@ -9,18 +9,7 @@ set more off
 gl base="C:\Users\galve\Documents\UChicago\ECON11020"
 gl data= "https://raw.githubusercontent.com/galvez-soriano/Econometrics/main/UChicago"
 *============================================================*
-/* Employment and minimum wage */
+/* Health insurance mandate */
 *============================================================*
-use "$data/minwage_short.dta", clear
+use "$data/cpsinsure.dta", clear
 
-drop if emptot1 == . | emptot2 == .
-*============================================================*
-/* Wide data */
-*============================================================*
-
-
-
-*============================================================*
-/* Long data */
-*============================================================*
-reshape long emptot empft emppt nmgrs, i(store_id) j(time)

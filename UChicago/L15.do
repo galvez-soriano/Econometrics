@@ -1,21 +1,12 @@
 *============================================================*
 /* ECON 11020 / Professor Oscar Galvez-Soriano */
 *============================================================*
-/* Lecture 14 */
+/* Lecture 16 */
 *============================================================*
-clear
-set more off
-*============================================================*
-gl base="C:\Users\galve\Documents\UChicago\ECON11020"
 gl data= "https://raw.githubusercontent.com/galvez-soriano/Econometrics/main/UChicago"
 *============================================================*
-/* Health insurance mandate */
+/* Estimation: First create the leads and lags that will be
+used in the TWFE and Sun and Abraham methods */
 *============================================================*
-use "$data/cpsinsure.dta", clear
+use "$data/sdata.dta", clear
 
-gen insured= hcovany==2
-gen treatment=state==25
-gen after=year>2007
-
-gen after_treat=treatment*after
-gen hstatus = health >= 4

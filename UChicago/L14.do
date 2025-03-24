@@ -1,7 +1,7 @@
 *============================================================*
 /* ECON 11020 / Professor Oscar Galvez-Soriano */
 *============================================================*
-/* Lecture 13 */
+/* Lecture 15 */
 *============================================================*
 clear
 set more off
@@ -14,7 +14,7 @@ grstyle set plain, horizontal
 gl base="C:\Users\Oscar Galvez Soriano\Documents\Teaching\ECON11020\Lectures"
 gl data= "https://raw.githubusercontent.com/galvez-soriano/Econometrics/main/UChicago"
 *============================================================*
-/* Health insurance mandate */
+/* Bilingual programs and test scores */
 *============================================================*
-use "$data/cpsinsure.dta", clear
+use "$data/rdbilinged.dta", clear
 
