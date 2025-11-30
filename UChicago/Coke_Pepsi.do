@@ -61,3 +61,9 @@ label var sales "Coke can sales"
 * 6. Check the regression (for you; students can run this)
 reg sales Pc Ac Pp Ap
 ******************************************************
+* F-test
+test Pp Ap
+* Restricted model
+reg sales Pc Ac
+* F-test (by hand)
+dis ((192.185497-177.031487)/2)/((177.031487)/75)
