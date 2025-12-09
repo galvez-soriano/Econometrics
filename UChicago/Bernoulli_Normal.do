@@ -1,4 +1,6 @@
 ****************************************************
+gl doc= "C:\Users\Oscar Galvez Soriano\Documents\Teaching\ECON11020\Lectures\Fall25\Codes for lectures"
+****************************************************
 * 1. Program: draw N Bernoulli(0.5), return sample mean
 ****************************************************
 clear
@@ -27,43 +29,44 @@ set seed 12345
 ****************************************************
 * 3. N = 10
 ****************************************************
-simulate mean = r(mean), reps(100) nodots: bernmean 10
+simulate mean = r(mean), reps(10) nodots: bernmean 1000
 
-histogram mean, frac ///
+histogram mean, frac color(gray) graphregion(fcolor(white)) ///
     normal ///
     width(0.02) ///
-    xline(0.5, lpattern(dash)) ///
+    xline(0.5, lpattern(dash) lcolor(red)) ///
     xtitle("Sample mean of p_hat") ///
     ytitle("Distribution") ///
     name(g10, replace)
+graph export "$doc\histo10.png", replace
 
 ****************************************************
 * 4. N = 50
 ****************************************************
-simulate mean = r(mean), reps(10000) nodots: bernmean 50
+simulate mean = r(mean), reps(50) nodots: bernmean 1000
 
-histogram mean, ///
+histogram mean, frac color(gray) graphregion(fcolor(white)) ///
     normal ///
     width(0.01) ///
-    xline(0.5, lpattern(dash)) ///
-    title("Sampling distribution of \hat{p}, N = 50") ///
-    xtitle("Sample mean \hat{p}") ///
+    xline(0.5, lpattern(dash) lcolor(red)) ///
+    xtitle("Sample mean p_hat") ///
     ytitle("Density") ///
     name(g50, replace)
+graph export "$doc\histo50.png", replace
 
 ****************************************************
 * 5. N = 100
 ****************************************************
-simulate mean = r(mean), reps(10000) nodots: bernmean 100
+simulate mean = r(mean), reps(100000) nodots: bernmean 1000
 
-histogram mean, ///
+histogram mean, frac color(gray) graphregion(fcolor(white)) ///
     normal ///
     width(0.008) ///
-    xline(0.5, lpattern(dash)) ///
-    title("Sampling distribution of \hat{p}, N = 100") ///
-    xtitle("Sample mean \hat{p}") ///
+    xline(0.5, lpattern(dash) lcolor(red)) ///
+    xtitle("Sample mean p_hat") ///
     ytitle("Density") ///
     name(g100, replace)
+graph export "$doc\histo100.png", replace
 
 ****************************************************
 * 6. Combine graphs into one figure (optional)
