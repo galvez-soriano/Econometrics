@@ -29,7 +29,9 @@ graph export "$doc\House_Dist.png", replace
 	
 * Scatter plot with fitted line
 twoway (scatter ln_price distance) (lfit ln_price distance), ///
-    xtitle("Distance to CBD (km)") ///
-    ytitle("Log Housing Price")
+    xtitle("Distance to CBD (mi)") ///
+    ytitle("Log Housing Price") ///
+	graphregion(color(white)) legend(off)
+graph export "$doc\House_Dist_Fit.png", replace
 	
     *title("Housing Prices and Distance to CBD")
